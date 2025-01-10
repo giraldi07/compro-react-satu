@@ -3,12 +3,14 @@ import { Section } from '../components/ui/Section';
 import { Button } from '../components/ui/Button';
 import { CheckCircle, Users, Award, Building, Globe } from 'lucide-react';
 import { motion } from 'framer-motion'; // Import Framer Motion
+import CountUp from 'react-countup'; // Import CountUp
+import { useInView } from 'react-intersection-observer'; // Import useInView untuk memicu animasi saat komponen terlihat
 
 const stats = [
-  { label: 'Years Experience', value: '10+' },
-  { label: 'Projects Completed', value: '200+' },
-  { label: 'Team Members', value: '50+' },
-  { label: 'Client Satisfaction', value: '95%' },
+  { label: 'Years Experience', value: 10 }, // Ubah nilai menjadi angka (bukan string)
+  { label: 'Projects Completed', value: 200 },
+  { label: 'Team Members', value: 50 },
+  { label: 'Client Satisfaction', value: 95 }, // Ubah nilai menjadi angka (bukan string)
 ];
 
 const values = [
@@ -49,6 +51,12 @@ const staggerContainer = {
 };
 
 export default function AboutPage() {
+  // Gunakan useInView untuk memicu animasi saat komponen terlihat di layar
+  const { ref, inView } = useInView({
+    triggerOnce: true, // Hanya memicu sekali
+    threshold: 0.5, // Memicu saat 50% komponen terlihat
+  });
+
   return (
     <main className="bg-white dark:bg-gray-900">
       {/* Hero Section */}
@@ -75,6 +83,41 @@ export default function AboutPage() {
           </motion.div>
         </Container>
       </Section>
+
+
+      {/* Stats Section */}
+      <Section>
+            <Container>
+              <motion.div
+                ref={ref} // Gunakan ref untuk memicu animasi saat komponen terlihat
+                initial="hidden"
+                animate={inView ? 'visible' : 'hidden'} // Memicu animasi saat inView true
+                variants={staggerContainer}
+                className="grid grid-cols-2 md:grid-cols-4 gap-8"
+              >
+                {stats.map((stat) => (
+                  <motion.div
+                    key={stat.label}
+                    variants={fadeInUp}
+                    className="text-center"
+                  >
+                    <div className="text-4xl font-bold text-blue-600">
+                      {/* Gunakan CountUp untuk animasi angka */}
+                      <CountUp
+                        start={0} // Mulai dari 0
+                        end={stat.value} // Nilai akhir
+                        duration={2} // Durasi animasi (dalam detik)
+                        suffix={stat.label === 'Client Satisfaction' ? '%' : '+'} // Tambahkan suffix jika diperlukan
+                      />
+                    </div>
+                    <div className="mt-2 text-sm text-gray-600 dark:text-gray-300">{stat.label}</div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </Container>
+      </Section>
+
+
 
       {/* Our Story Section */}
       <Section>
@@ -137,6 +180,7 @@ export default function AboutPage() {
             </motion.p>
           </motion.div>
 
+
           <motion.div
             initial="hidden"
             animate="visible"
@@ -162,28 +206,7 @@ export default function AboutPage() {
         </Container>
       </Section>
 
-      {/* Stats Section */}
-      <Section>
-        <Container>
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
-          >
-            {stats.map((stat) => (
-              <motion.div
-                key={stat.label}
-                variants={fadeInUp}
-                className="text-center"
-              >
-                <div className="text-4xl font-bold text-blue-600">{stat.value}</div>
-                <div className="mt-2 text-sm text-gray-600 dark:text-gray-300">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </Container>
-      </Section>
+
     </main>
   );
 }
