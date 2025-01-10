@@ -147,7 +147,7 @@ export default function AboutPage() {
               <motion.div
                 key={value.title}
                 variants={fadeInUp}
-                className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg"
+                className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border dark:border-gray-800"
               >
                 <value.icon className="h-8 w-8 text-blue-600" />
                 <h3 className="mt-4 text-xl font-semibold text-gray-900 dark:text-white">

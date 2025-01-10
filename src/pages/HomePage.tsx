@@ -43,7 +43,7 @@ export default function HomePage() {
           >
             <motion.h1
               variants={fadeInUp}
-              className="text-6xl font-bold text-white"
+              className="text-4xl sm:text-3xl md:text-4xl lg:6xl font-bold text-white"
             >
               Welcome to Our Website
             </motion.h1>
